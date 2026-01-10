@@ -1,2 +1,2 @@
 // Services barrel file
-export {};
+export * from './invoice.service';

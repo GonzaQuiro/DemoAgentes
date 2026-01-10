@@ -1,2 +1,2 @@
 // Models barrel file
-export {};
+export * from './invoice.model';

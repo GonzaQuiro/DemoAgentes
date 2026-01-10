@@ -1,0 +1,272 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal__header {
+  position: relative;
+  padding: 2rem 2rem 1.5rem;
+  text-align: center;
+}
+
+.modal__header--approved {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+}
+
+.modal__header--rejected {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+}
+
+.modal__header--pending {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+}
+
+.modal__icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.modal__header--approved .modal__icon-wrapper {
+  background: #10b981;
+}
+
+.modal__header--rejected .modal__icon-wrapper {
+  background: #ef4444;
+}
+
+.modal__header--pending .modal__icon-wrapper {
+  background: #f59e0b;
+}
+
+.modal__icon {
+  width: 32px;
+  height: 32px;
+  color: white;
+}
+
+.modal__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.modal__header--approved .modal__title {
+  color: #065f46;
+}
+
+.modal__header--rejected .modal__title {
+  color: #991b1b;
+}
+
+.modal__header--pending .modal__title {
+  color: #92400e;
+}
+
+.modal__subtitle {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.modal__header--approved .modal__subtitle {
+  color: #047857;
+}
+
+.modal__header--rejected .modal__subtitle {
+  color: #dc2626;
+}
+
+.modal__header--pending .modal__subtitle {
+  color: #d97706;
+}
+
+.modal__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal__close:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.modal__close:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
+}
+
+.modal__close svg {
+  width: 18px;
+  height: 18px;
+  color: #64748b;
+}
+
+.modal__body {
+  padding: 1.5rem 2rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.modal__section-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 1rem 0;
+}
+
+.modal__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 480px) {
+  .modal__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.modal__label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.modal__value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.modal__value--highlight {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.modal__value--mono {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-size: 0.8125rem;
+}
+
+.modal__badge {
+  display: inline-flex;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.modal__badge--approved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.modal__badge--rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.modal__badge--pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.modal__divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 1.5rem 0;
+}
+
+.modal__footer {
+  padding: 1rem 2rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #f1f5f9;
+}
+
+.modal__button {
+  padding: 0.75rem 2rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal__button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.modal__button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
+}

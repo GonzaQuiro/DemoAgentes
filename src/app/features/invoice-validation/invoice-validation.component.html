@@ -1,0 +1,46 @@
+<div class="page">
+  <header class="page__header">
+    <h1 class="page__title">Validación de Comprobantes</h1>
+    <p class="page__description">
+      Sube una factura en formato PDF para extraer automáticamente los datos y validar el comprobante contra ARCA.
+    </p>
+  </header>
+
+  <div class="page__content">
+    <section class="page__dropzone" aria-label="Zona de carga de archivo">
+      <app-pdf-dropzone
+        (fileSelected)="onFileSelected($event)"
+        (fileRemoved)="onFileRemoved()" />
+      
+      @if (isExtracting()) {
+        <div class="page__loading" role="status" aria-live="polite">
+          <div class="page__loading-spinner"></div>
+          <span class="page__loading-text">Extrayendo datos del comprobante...</span>
+        </div>
+      }
+
+      @if (extractionError()) {
+        <div class="page__error" role="alert">
+          <svg class="page__error-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="16" r="1" fill="currentColor"/>
+          </svg>
+          <span>{{ extractionError() }}</span>
+        </div>
+      }
+    </section>
+
+    <aside class="page__form" aria-label="Formulario de datos del comprobante">
+      <app-invoice-form
+        [extractedData]="extractedData()"
+        [isLoading]="isValidating()"
+        (submitForm)="onValidateInvoice($event)" />
+    </aside>
+  </div>
+
+  <app-validation-result-modal
+    [isOpen]="isModalOpen()"
+    [response]="validationResponse()"
+    (closeModal)="closeModal()" />
+</div>

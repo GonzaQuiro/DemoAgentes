@@ -1,0 +1,161 @@
+<form [formGroup]="form" class="invoice-form" (ngSubmit)="onSubmit()">
+  <h3 class="invoice-form__title">Datos del Comprobante</h3>
+  
+  <div class="invoice-form__grid">
+    <div class="invoice-form__field">
+      <label for="cuitEmisor" class="invoice-form__label">CUIT Emisor</label>
+      <input
+        id="cuitEmisor"
+        type="text"
+        formControlName="CuitEmisor"
+        class="invoice-form__input"
+        placeholder="Ej: 20123456789"
+        [attr.aria-invalid]="isFieldInvalid('CuitEmisor')"
+        [attr.aria-describedby]="isFieldInvalid('CuitEmisor') ? 'cuitEmisor-error' : null" />
+      @if (isFieldInvalid('CuitEmisor')) {
+        <span id="cuitEmisor-error" class="invoice-form__error" role="alert">
+          CUIT requerido (11 dígitos)
+        </span>
+      }
+    </div>
+
+    <div class="invoice-form__field">
+      <label for="ptoVta" class="invoice-form__label">Punto de Venta</label>
+      <input
+        id="ptoVta"
+        type="number"
+        formControlName="PtoVta"
+        class="invoice-form__input"
+        placeholder="Ej: 1"
+        [attr.aria-invalid]="isFieldInvalid('PtoVta')"
+        [attr.aria-describedby]="isFieldInvalid('PtoVta') ? 'ptoVta-error' : null" />
+      @if (isFieldInvalid('PtoVta')) {
+        <span id="ptoVta-error" class="invoice-form__error" role="alert">
+          Punto de venta requerido
+        </span>
+      }
+    </div>
+
+    <div class="invoice-form__field">
+      <label for="cbteTipo" class="invoice-form__label">Tipo de Comprobante</label>
+      <input
+        id="cbteTipo"
+        type="number"
+        formControlName="CbteTipo"
+        class="invoice-form__input"
+        placeholder="Ej: 1 (Factura A)"
+        [attr.aria-invalid]="isFieldInvalid('CbteTipo')"
+        [attr.aria-describedby]="isFieldInvalid('CbteTipo') ? 'cbteTipo-error' : null" />
+      @if (isFieldInvalid('CbteTipo')) {
+        <span id="cbteTipo-error" class="invoice-form__error" role="alert">
+          Tipo de comprobante requerido
+        </span>
+      }
+    </div>
+
+    <div class="invoice-form__field">
+      <label for="cbteNro" class="invoice-form__label">Número de Comprobante</label>
+      <input
+        id="cbteNro"
+        type="number"
+        formControlName="CbteNro"
+        class="invoice-form__input"
+        placeholder="Ej: 12345"
+        [attr.aria-invalid]="isFieldInvalid('CbteNro')"
+        [attr.aria-describedby]="isFieldInvalid('CbteNro') ? 'cbteNro-error' : null" />
+      @if (isFieldInvalid('CbteNro')) {
+        <span id="cbteNro-error" class="invoice-form__error" role="alert">
+          Número de comprobante requerido
+        </span>
+      }
+    </div>
+
+    <div class="invoice-form__field">
+      <label for="cbteFch" class="invoice-form__label">Fecha de Emisión</label>
+      <input
+        id="cbteFch"
+        type="text"
+        formControlName="CbteFch"
+        class="invoice-form__input"
+        placeholder="YYYYMMDD (Ej: 20240110)"
+        [attr.aria-invalid]="isFieldInvalid('CbteFch')"
+        [attr.aria-describedby]="isFieldInvalid('CbteFch') ? 'cbteFch-error' : null" />
+      @if (isFieldInvalid('CbteFch')) {
+        <span id="cbteFch-error" class="invoice-form__error" role="alert">
+          Fecha requerida (formato YYYYMMDD)
+        </span>
+      }
+    </div>
+
+    <div class="invoice-form__field">
+      <label for="impTotal" class="invoice-form__label">Importe Total</label>
+      <input
+        id="impTotal"
+        type="number"
+        step="0.01"
+        formControlName="ImpTotal"
+        class="invoice-form__input"
+        placeholder="Ej: 10000.50"
+        [attr.aria-invalid]="isFieldInvalid('ImpTotal')"
+        [attr.aria-describedby]="isFieldInvalid('ImpTotal') ? 'impTotal-error' : null" />
+      @if (isFieldInvalid('ImpTotal')) {
+        <span id="impTotal-error" class="invoice-form__error" role="alert">
+          Importe total requerido
+        </span>
+      }
+    </div>
+
+    <div class="invoice-form__field">
+      <label for="codAutorizacion" class="invoice-form__label">Código de Autorización (CAE)</label>
+      <input
+        id="codAutorizacion"
+        type="text"
+        formControlName="CodAutorizacion"
+        class="invoice-form__input"
+        placeholder="14 dígitos"
+        [attr.aria-invalid]="isFieldInvalid('CodAutorizacion')"
+        [attr.aria-describedby]="isFieldInvalid('CodAutorizacion') ? 'codAutorizacion-error' : null" />
+      @if (isFieldInvalid('CodAutorizacion')) {
+        <span id="codAutorizacion-error" class="invoice-form__error" role="alert">
+          Código de autorización requerido (14 dígitos)
+        </span>
+      }
+    </div>
+
+    <div class="invoice-form__field">
+      <label for="docNroReceptor" class="invoice-form__label">CUIT Receptor</label>
+      <input
+        id="docNroReceptor"
+        type="text"
+        formControlName="DocNroReceptor"
+        class="invoice-form__input"
+        placeholder="Ej: 30987654321"
+        [attr.aria-invalid]="isFieldInvalid('DocNroReceptor')"
+        [attr.aria-describedby]="isFieldInvalid('DocNroReceptor') ? 'docNroReceptor-error' : null" />
+      @if (isFieldInvalid('DocNroReceptor')) {
+        <span id="docNroReceptor-error" class="invoice-form__error" role="alert">
+          CUIT del receptor requerido
+        </span>
+      }
+    </div>
+  </div>
+
+  <div class="invoice-form__actions">
+    <button
+      type="submit"
+      class="invoice-form__submit"
+      [class.invoice-form__submit--loading]="isLoading()"
+      [disabled]="form.invalid || isLoading()">
+      @if (isLoading()) {
+        <span class="invoice-form__spinner"></span>
+        Validando...
+      } @else {
+        <svg class="invoice-form__submit-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Validar Comprobante
+      }
+    </button>
+  </div>
+</form>

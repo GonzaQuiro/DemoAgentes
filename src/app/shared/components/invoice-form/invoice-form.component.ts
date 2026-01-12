@@ -31,6 +31,8 @@ export class InvoiceFormComponent implements OnInit {
       const data = this.extractedData();
       if (data) {
         this.patchFormWithExtractedData(data);
+      } else if (this.form) {
+        this.form.reset();
       }
     });
   }

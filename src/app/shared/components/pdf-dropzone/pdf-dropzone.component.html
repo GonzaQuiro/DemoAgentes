@@ -7,7 +7,7 @@
   (drop)="onDrop($event)"
   role="button"
   tabindex="0"
-  [attr.aria-label]="hasFile() ? 'Documento cargado: ' + fileName() : 'Zona para arrastrar archivo PDF'"
+  [attr.aria-label]="hasFile() ? 'Documento cargado: ' + fileName() : 'Zona para arrastrar archivo PDF o imagen'"
   (keydown.enter)="openFileDialog()"
   (keydown.space)="openFileDialog()">
   
@@ -20,8 +20,18 @@
           <line x1="12" y1="3" x2="12" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <h3 class="dropzone__title">Arrastra tu factura aquí</h3>
-      <p class="dropzone__subtitle">o haz clic para seleccionar un archivo PDF</p>
+      <h3 class="dropzone__title">Arrastra tu comprobante aquí</h3>
+      <p class="dropzone__subtitle">o haz clic para seleccionar un archivo PDF o imagen</p>
+      @if (fileError()) {
+        <div class="dropzone__error" role="alert">
+          <svg class="dropzone__error-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="16" r="1" fill="currentColor"/>
+          </svg>
+          <span>{{ fileError() }}</span>
+        </div>
+      }
       <button 
         type="button" 
         class="dropzone__button"
@@ -31,32 +41,34 @@
     </div>
   } @else {
     <div class="dropzone__preview">
-      <div class="dropzone__header">
-        <div class="dropzone__file-info">
-          <svg class="dropzone__file-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="dropzone__filename">{{ fileName() }}</span>
-        </div>
-        <button 
-          type="button"
-          class="dropzone__remove"
-          (click)="removeFile($event)"
-          aria-label="Eliminar archivo">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
+      <button 
+        type="button"
+        class="dropzone__remove-floating"
+        (click)="removeFile($event)"
+        aria-label="Eliminar archivo">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
       <div class="dropzone__viewer">
-        @if (pdfUrl()) {
-          <iframe 
-            [src]="pdfUrl()" 
+        @if (isPdf() && fileUrl()) {
+          <object 
+            [data]="fileUrl()" 
+            type="application/pdf"
             class="dropzone__iframe"
-            title="Vista previa del documento PDF">
-          </iframe>
+            [attr.title]="'Vista previa del documento PDF'">
+            <p class="dropzone__fallback">
+              No se puede mostrar el PDF. 
+              <a [href]="imageUrl()!" download="documento.pdf">Descargar PDF</a>
+            </p>
+          </object>
+        } @else if (isImage() && imageUrl()) {
+          <img 
+            [src]="imageUrl()!" 
+            class="dropzone__image"
+            alt="Vista previa de la imagen"
+            loading="lazy" />
         }
       </div>
     </div>
@@ -66,7 +78,7 @@
     #fileInput
     type="file" 
     class="dropzone__input"
-    accept="application/pdf"
+    accept="application/pdf,image/*"
     (change)="onFileSelected($event)"
     aria-hidden="true" />
 </div>

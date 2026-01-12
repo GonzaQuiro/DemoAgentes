@@ -22,10 +22,19 @@ export class PdfDropzoneComponent implements OnDestroy {
 
   protected readonly isDragging = signal(false);
   protected readonly file = signal<File | null>(null);
-  protected readonly pdfObjectUrl = signal<string | null>(null);
+  protected readonly fileObjectUrl = signal<string | null>(null);
+  protected readonly fileError = signal<string | null>(null);
 
   protected readonly hasFile = computed(() => this.file() !== null);
   protected readonly fileName = computed(() => this.file()?.name ?? '');
+  protected readonly isImage = computed(() => {
+    const file = this.file();
+    return file ? file.type.startsWith('image/') : false;
+  });
+  protected readonly isPdf = computed(() => {
+    const file = this.file();
+    return file ? file.type === 'application/pdf' : false;
+  });
 
   private readonly fileInput = viewChild.required<ElementRef<HTMLInputElement>>('fileInput');
 
@@ -35,9 +44,13 @@ export class PdfDropzoneComponent implements OnDestroy {
     this.revokeObjectUrl();
   }
 
-  protected pdfUrl(): SafeResourceUrl | null {
-    const url = this.pdfObjectUrl();
+  protected fileUrl(): SafeResourceUrl | null {
+    const url = this.fileObjectUrl();
     return url ? this.sanitizer.bypassSecurityTrustResourceUrl(url) : null;
+  }
+
+  protected imageUrl(): string | null {
+    return this.fileObjectUrl();
   }
 
   protected onDragOver(event: DragEvent): void {
@@ -83,21 +96,26 @@ export class PdfDropzoneComponent implements OnDestroy {
   }
 
   private handleFile(file: File): void {
-    if (file.type !== 'application/pdf') {
+    const isValidFile = file.type === 'application/pdf' || file.type.startsWith('image/');
+    
+    if (!isValidFile) {
+      this.fileError.set('Solo se permiten archivos PDF o imágenes (JPG, PNG, etc.)');
+      setTimeout(() => this.fileError.set(null), 4000);
       return;
     }
 
+    this.fileError.set(null);
     this.revokeObjectUrl();
     this.file.set(file);
-    this.pdfObjectUrl.set(URL.createObjectURL(file));
+    this.fileObjectUrl.set(URL.createObjectURL(file));
     this.fileSelected.emit(file);
   }
 
   private revokeObjectUrl(): void {
-    const url = this.pdfObjectUrl();
+    const url = this.fileObjectUrl();
     if (url) {
       URL.revokeObjectURL(url);
-      this.pdfObjectUrl.set(null);
+      this.fileObjectUrl.set(null);
     }
   }
 }
